@@ -20,9 +20,7 @@ interface Center {
 
 const CentersGrid: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: centers, status } = useSelector(
-    (state: RootState) => state.centers
-  );
+  const { data: centers } = useSelector((state: RootState) => state.centers);
 
   useEffect(() => {
     dispatch(fetchCenters());
@@ -33,46 +31,57 @@ const CentersGrid: React.FC = () => {
       "https://raw.githubusercontent.com/MujtabaKably/bhive-interview-project-data/main/" +
       center.images[0];
 
-    // Compute the highest discount from the object
+    // Calculation for the highest discount
     const discounts = center.day_pass_discounts_percentage as any;
     const maxDiscount = discounts
       ? Math.max(...Object.values(discounts).map((d: any) => d.value))
       : 0;
 
+    // Calculation for bulk price
     const discountPrice = center.day_pass_price * 0.2 * 10;
     const bulkPrice = center.day_pass_price * 10 - discountPrice;
 
     return (
-      <div className="w-[370px] h-[384px] rounded-[8px] border-[1.08px] border-[#E5E5E5] bg-white overflow-hidden mx-auto flex flex-col px-[10px] shadow-sm">
+      <div
+        className="
+          w-full max-w-[370px] sm:max-w-[320px] md:max-w-[370px]
+          h-auto sm:h-[340px] md:h-[384px]
+          rounded-[8px] border-[1.08px] border-[#E5E5E5] bg-white overflow-hidden mx-auto flex flex-col px-[10px] shadow-sm
+        "
+      >
         <div className="p-4 flex justify-between items-start">
-          <div className="pr-2 w-[238px] h-[48px] top-[1106px] left-[132px]">
+          <div className="pr-2 w-full sm:w-[200px] md:w-[238px] h-[48px]">
             <h2 className="font-inter font-semibold text-[20px] leading-[100%] tracking-[0px] text-gray-800 h-[50px] overflow-hidden line-clamp-2">
               {center.name}
             </h2>
           </div>
-          <div className="w-[52px] h-[52px] rounded-[6.47px] border-[0.47px] border-[#F0EDED] bg-gray-100 flex flex-col items-center justify-center">
-            <div className="w-7 h-7 border-[2px] border-black rounded-full flex items-center justify-center mt-1">
+          <div className="w-[42px] h-[42px] sm:w-[50px] sm:h-[50px] rounded-[6px] border border-[#F0EDED] bg-gray-100 flex flex-col items-center justify-center">
+            <div className="w-6 h-6 border-2 border-black rounded-full flex items-center justify-center">
               <FontAwesomeIcon
                 icon={faDiamondTurnRight}
-                className="text-black text-[18px]"
+                className="text-black text-[10px]"
               />
             </div>
-            <p className="text-gray-500 text-sm font-medium">6 Kms</p>
+            <p className="text-gray-500 text-[9px] sm:text-[10px] font-medium mt-[2px] leading-none">
+              6 Kms
+            </p>
           </div>
         </div>
 
-        <img
-          src={image}
-          alt={center.name}
-          className="w-[346px] h-[202px] top-[1172px] left-[132px] rounded-[6px] object-cover"
-        />
+       <img
+  src={image}
+  alt={center.name}
+  className="w-full max-w-[320px] sm:max-w-[346px] h-[160px] sm:h-[202px] rounded-[6px] object-cover mx-auto mb-4 sm:mb-5 md:mb-0"
+/>
 
         <div className="flex justify-between items-stretch pb-3 space-x-2 mt-auto">
           {/* Day Pass */}
           <div
-            className="bg-gray-100 p-3 flex-1 flex flex-col 
-             w-[167px] h-[66px] top-[1396px] left-[132px]
-             rounded-[6px] border border-gray-300 border-[0.5px]"
+            className="
+              bg-gray-100 p-3 flex-1 flex flex-col 
+              w-full max-w-[150px] sm:max-w-[167px] h-[56px] sm:h-[66px]
+              rounded-[6px] border border-gray-300 border-[0.5px]
+            "
           >
             <p className="font-inter font-medium text-[14px] leading-[100%] tracking-[0px] text-gray-500">
               Day Pass
@@ -103,7 +112,12 @@ const CentersGrid: React.FC = () => {
           </div>
 
           {/* Bulk Pass */}
-          <div className="bg-yellow-400 p-3 rounded-xl flex-1 relative flex flex-col justify-between h-[66px]">
+          <div
+            className="
+              bg-yellow-400 p-3 rounded-xl flex-1 relative flex flex-col justify-between
+              h-[56px] sm:h-[66px] max-w-[150px] sm:max-w-none
+            "
+          >
             {maxDiscount > 0 && (
               <span className="absolute -top-2 left-10 bg-gray-900 text-white text-xs px-2 py-0.5 rounded shadow">
                 {maxDiscount}% Discount
@@ -138,20 +152,20 @@ const CentersGrid: React.FC = () => {
     );
   };
 
-  if (status === "loading")
-    return <p className="text-center py-10">Loading…</p>;
-  if (status === "failed")
-    return (
-      <p className="text-center py-10 text-red-500">Failed to load centers.</p>
-    );
-
   return (
-    <div className="pl-[60px] pr-[60px] px-4 py-8">
-      <h1 className="mb-8 font-inter font-bold text-[36px] leading-[45px] tracking-[0.3px]">
-  Our Space Overview
-</h1>
+    <div className="px-4 py-8">
+      {/* Title + Arrow */}
+      <div className="flex items-center justify-between px-[10px] sm:px-[20px] md:px-[60px]">
+        <h1 className="font-inter font-bold text-[24px] sm:text-[28px] md:text-[36px] leading-[45px] tracking-[0.3px]">
+          Our Spaces
+        </h1>
+        <span className="text-yellow-500 text-[44px] sm:text-[28px] md:text-[32px] font-bold mr-2 sm:mr-4 md:mr-6 lg:hidden">
+          →
+        </span>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-[10px] sm:px-[20px] md:px-[60px]">
         {centers.map((center) => (
           <CenterCard key={center.id} center={center} />
         ))}
